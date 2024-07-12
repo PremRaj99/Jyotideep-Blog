@@ -12,7 +12,7 @@ export default function Comment({ comment, onLike, onEdit, onDelete }) {
   useEffect(() => {
     const getUser = async () => {
       try {
-        const res = await fetch(`${process.env.VITE_API_URL}/api/user/${comment.userId}`);
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/user/${comment.userId}`);
         const data = await res.json();
         if (res.ok) {
           setUser(data);
@@ -31,7 +31,7 @@ export default function Comment({ comment, onLike, onEdit, onDelete }) {
 
   const handleSave = async () => {
     try {
-      const res = await fetch(`${process.env.VITE_API_URL}/api/comment/editcomment/${comment._id}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/comment/editcomment/${comment._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
