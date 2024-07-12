@@ -23,9 +23,10 @@ const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
+// Set up CORS to allow requests from your frontend's domain
 app.use(cors({
-  origin: "https://jyotideep-blog.vercel.app",
-  methods: ["GET", "POST, PUT", "DELETE"],
+  origin: 'https://jyotideep-blog.vercel.app/', // Replace with your frontend URL
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,
 }));
 
