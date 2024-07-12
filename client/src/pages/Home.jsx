@@ -9,7 +9,7 @@ export default function Home() {
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const res = await fetch("/api/post/getposts");
+      const res = await fetch(`${process.env.VITE_API_URL}/api/post/getposts`);
       if (res.ok) {
         const data = await res.json();
         setPosts(data.posts);
