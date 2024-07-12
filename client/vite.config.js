@@ -6,7 +6,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://jyotideep-blog-api.vercel.app/',
+        target: 'https://jyotideep-blog-api.vercel.app',
         secure: false,
       },
     },
