@@ -8,11 +8,8 @@ export const create = async (req, res, next) => {
   if (!req.body.title || !req.body.content) {
     return next(errorHandler(400, "Please provide all required fields"));
   }
-  const slug = req.body.title
-    .split(" ")
-    .join("-")
-    .toLowerCase()
-    .replace(/[^a-zA-Z0-9-]/g, "");
+  const slug = req.body.title.split(" ").join("-").toLowerCase();
+
   const newPost = new Post({
     ...req.body,
     slug,
@@ -85,7 +82,7 @@ export const deletepost = async (req, res, next) => {
 
 export const updatepost = async (req, res, next) => {
   if (!req.user.isAdmin || req.user.id !== req.params.userId) {
-    return next(errorHandler(403, 'You are not allowed to update this post'));
+    return next(errorHandler(403, "You are not allowed to update this post"));
   }
   try {
     const updatedPost = await Post.findByIdAndUpdate(
