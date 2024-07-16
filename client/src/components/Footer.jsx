@@ -38,7 +38,7 @@ export default function FooterComponent() {
                   100 Js Projects
                 </Footer.Link>
                 <Footer.Link as={"div"}>
-                  <Link to="/about">Prem's Blog</Link>
+                  <Link to="/about">Jyotideep's Blog</Link>
                 </Footer.Link>
               </Footer.LinkGroup>
             </div>
@@ -69,7 +69,7 @@ export default function FooterComponent() {
           <div className="">
             <Footer.Copyright
               href="#"
-              by="Prem's blog"
+              by="Jyotideep's blog"
               year={new Date().getFullYear()}
             />
           </div>

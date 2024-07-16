@@ -48,6 +48,7 @@ export default function Home() {
       {/* <div className="p-3 bg-amber-100 dark:bg-slate-700">
         <CallToAction />
       </div> */}
+      <div className="border border-slate-200 w-[80%] mx-auto"></div>
 
       <div className="max-w-6xl mx-auto p-3 flex flex-col gap-8 py-7">
         {posts && posts.length > 0 && (
