@@ -9,7 +9,9 @@ export default function Home() {
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/post/getposts`);
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/post/getposts`
+      );
       if (res.ok) {
         const data = await res.json();
         setPosts(data.posts);
@@ -21,19 +23,23 @@ export default function Home() {
     <div>
       <div className="flex items-center flex-col-reverse sm:flex-row py-28 gap-5 max-w-6xl">
         <div className="flex items-center sm:items-start mx-auto flex-col gap-4 sm:gap-6">
-
-        <h1 className="text-4xl text-teal-600 font-bold sm:text-6xl">Jyotideep</h1>
-        <h2 className="text-xl sm:text-2xl font-semibold">Naya Savera Parivar</h2>
-        <p className="text-gray-500 w-[50ch] text-center sm:text-left text-xs sm:text-sm">
-          Here you will find a verity of articles and tutorials on topic such as
-          web devlopment, software engineering, and programming language.
-        </p>
-        <Link
-          to="/search"
-          className="text-xs sm:text-sm text-teal-600  border p-2 rounded-md border-teal-600 hover:bg-teal-600 hover:text-white font-bold"
-        >
-          View all posts
-        </Link>
+          <h1 className="text-4xl text-teal-600 font-bold sm:text-6xl">
+            Jyotideep
+          </h1>
+          <h2 className="text-xl sm:text-2xl font-semibold">
+            Naya Savera Parivar
+          </h2>
+          <p className="text-gray-500 w-[50ch] text-center sm:text-left text-xs sm:text-sm">
+            All beings in this world are our relatives. It is our differing
+            ideologies that divide us into various groups and turn us against
+            one another.
+          </p>
+          <Link
+            to="/search"
+            className="text-xs sm:text-sm text-teal-600  border p-2 rounded-md border-teal-600 hover:bg-teal-600 hover:text-white font-bold"
+          >
+            View all posts
+          </Link>
         </div>
         <div className="">
           <img src={logo} className="w-40  sm:w-80" alt="" />
@@ -52,7 +58,12 @@ export default function Home() {
                 <PostCard key={post._id} post={post} />
               ))}
             </div>
-            <Link to='/search' className="text-lg text-teal-500 hover:underline text-center">View all posts</Link>
+            <Link
+              to="/search"
+              className="text-lg text-teal-500 hover:underline text-center"
+            >
+              View all posts
+            </Link>
           </div>
         )}
       </div>
