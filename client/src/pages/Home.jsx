@@ -29,8 +29,8 @@ export default function Home() {
           <h2 className="text-xl sm:text-2xl font-semibold">
             Naya Savera Parivar
           </h2>
-          <p className="text-gray-500 w-[50ch] text-center sm:text-left text-xs sm:text-sm">
-            All beings in this world are our relatives. It is our differing
+          <p className="text-gray-500 w-[50ch] italic text-center sm:text-left text-xs sm:text-sm">
+            All Humans in this world are our relatives. It is our differing
             ideologies that divide us into various groups and turn us against
             one another.
           </p>
