@@ -35,7 +35,9 @@ export default function Search() {
       setLoading(true);
       const searchQuery = urlParams.toString();
       console.log(searchQuery);
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/post/getposts?${searchQuery}`);
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/post/getposts?${searchQuery}`
+      );
       if (!res.ok) {
         setLoading(false);
         return;
@@ -84,7 +86,9 @@ export default function Search() {
     const urlParams = new URLSearchParams(location.search);
     urlParams.set("startIndex", startIndex);
     const searchQuery = urlParams.toString();
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/post/getposts?${searchQuery}`);
+    const res = await fetch(
+      `${import.meta.env.VITE_API_URL}/api/post/getposts?${searchQuery}`
+    );
     if (!res.ok) {
       return;
     }
@@ -131,9 +135,10 @@ export default function Search() {
               id="category"
             >
               <option value="uncategorized">Uncategorized</option>
-              <option value="javascript">JavaScript</option>
-              <option value="reactjs">ReactJs</option>
-              <option value="nextjs">NextJs</option>
+              <option value="Social">Social</option>
+              <option value="Ploitical">Political</option>
+              <option value="Economic">Economic</option>
+              <option value="Environmental">Environmental</option>
             </Select>
           </div>
           <Button type="submit" outline gradientDuoTone="purpleToPink">

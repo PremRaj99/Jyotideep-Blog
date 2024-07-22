@@ -19,16 +19,26 @@ export default function UpdatePost() {
   const [imageUploadProgress, setImageUploadProgress] = useState(null);
   const [imageUploadError, setImageUploadError] = useState(null);
   const [formData, setFormData] = useState({});
+  const [content, setContent] = useState("");
   const [publishError, setPublishError] = useState(null);
   const { postId } = useParams();
+
+  console.log(formData);
+  console.log("content : " + content);
 
   const navigate = useNavigate();
   const { currentUser } = useSelector((state) => state.user);
 
   useEffect(() => {
+    setContent(formData.content)
+  },[formData.content && content !== ""])
+
+  useEffect(() => {
     try {
       const fetchPost = async () => {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/post/getposts?postId=${postId}`);
+        const res = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/post/getposts?postId=${postId}`
+        );
         const data = await res.json();
         if (!res.ok) {
           console.log(data.message);
@@ -86,13 +96,15 @@ export default function UpdatePost() {
     e.preventDefault();
     try {
       const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/post/updatepost/${formData._id}/${currentUser._id}`,
+        `${import.meta.env.VITE_API_URL}/api/post/updatepost/${formData._id}/${
+          currentUser._id
+        }`,
         {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(formData),
+          body: JSON.stringify({ ...formData, content: content }),
         }
       );
       const data = await res.json();
@@ -131,9 +143,10 @@ export default function UpdatePost() {
             value={formData.category}
           >
             <option value="uncategorized">Select a category</option>
-            <option value="javascript">JavaScript</option>
-            <option value="reactjs">React.js</option>
-            <option value="nextjs">Next.js</option>
+            <option value="Social">Social</option>
+            <option value="Political">Political</option>
+            <option value="Economic">Economic</option>
+            <option value="Environmental">Environmental</option>
           </Select>
         </div>
         <div className="flex gap-4 items-center justify-between border-4 border-teal-100 border-dotted p-3">
@@ -174,12 +187,12 @@ export default function UpdatePost() {
         )}
         <ReactQuill
           theme="snow"
-          value={formData.content}
+          value={content}
           placeholder="Write something..."
           className="h-72 mb-12"
           required
           onChange={(value) => {
-            setFormData({ ...formData, content: value });
+            setContent(value);
           }}
         />
         <Button type="submit" gradientDuoTone={"purpleToPink"}>
