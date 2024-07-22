@@ -101,6 +101,7 @@ export default function CreatePost() {
             setFormData({...formData, category: e.target.value})
           }}>
             <option value="Social">Social</option>
+            <option value="Spritual">Spritual</option>
             <option value="Political">Political</option>
             <option value="Economic">Economic</option>
             <option value="Environmental">Environmental</option>

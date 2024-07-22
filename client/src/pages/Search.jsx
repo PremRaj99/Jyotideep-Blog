@@ -136,6 +136,7 @@ export default function Search() {
             >
               <option value="uncategorized">Uncategorized</option>
               <option value="Social">Social</option>
+              <option value="Spritual">Spritual</option>
               <option value="Ploitical">Political</option>
               <option value="Economic">Economic</option>
               <option value="Environmental">Environmental</option>
