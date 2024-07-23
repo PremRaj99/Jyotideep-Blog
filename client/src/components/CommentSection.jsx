@@ -4,13 +4,16 @@ import { Link, useNavigate } from "react-router-dom";
 import { Alert, Button, Modal, Textarea } from "flowbite-react";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import Comment from "./Comment";
+import { FaFacebookF, FaShare, FaWhatsapp } from "react-icons/fa";
+import { MdEdit } from "react-icons/md";
 
-export default function CommentSection({ postId }) {
+export default function CommentSection({ postId, handleWhatsappShare, handleFacebookShare }) {
   const { currentUser } = useSelector((state) => state.user);
   const [comment, setComment] = useState("");
   const [commentError, setCommentError] = useState(null);
   const [comments, setComments] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [showShareModal, setShowShareModal] = useState(false);
   const [commentToDelete, setCommentToDelete] = useState(null);
   const navigate = useNavigate();
 
@@ -22,17 +25,20 @@ export default function CommentSection({ postId }) {
       return;
     }
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/comment/create`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          content: comment,
-          postId,
-          userId: currentUser._id,
-        }),
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/comment/create`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            content: comment,
+            postId,
+            userId: currentUser._id,
+          }),
+        }
+      );
       const data = await res.json();
       if (res.ok) {
         setComment("");
@@ -47,7 +53,11 @@ export default function CommentSection({ postId }) {
   useEffect(() => {
     const getcomments = async () => {
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/comment/getpostcomments/${postId}`);
+        const res = await fetch(
+          `${
+            import.meta.env.VITE_API_URL
+          }/api/comment/getpostcomments/${postId}`
+        );
         if (res.ok) {
           const data = await res.json();
           setComments(data);
@@ -65,9 +75,12 @@ export default function CommentSection({ postId }) {
         navigate("/sign-in");
         return;
       }
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/comment/likecomment/${commentId}`, {
-        method: "PUT",
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/comment/likecomment/${commentId}`,
+        {
+          method: "PUT",
+        }
+      );
       if (res.ok) {
         const data = await res.json();
         setComments(
@@ -102,9 +115,14 @@ export default function CommentSection({ postId }) {
         navigate("/sign-in");
         return;
       }
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/comment/deletecomment/${commentId}`, {
-        method: "DELETE",
-      });
+      const res = await fetch(
+        `${
+          import.meta.env.VITE_API_URL
+        }/api/comment/deletecomment/${commentId}`,
+        {
+          method: "DELETE",
+        }
+      );
       if (res.ok) {
         const data = await res.json();
         setComments(comments.filter((comment) => comment._id !== commentId));
@@ -117,20 +135,35 @@ export default function CommentSection({ postId }) {
   return (
     <div className="max-w-2xl mx-auto w-full p-3">
       {currentUser ? (
-        <div className="flex items-center gap-1 my-5 text-gray-500 text-sm">
-          <p>Signed in as:</p>
-          <img
-            className="h-5 w-5 object-cover rounded-full"
-            src={currentUser.profilePicture}
-            alt={currentUser.username}
-          />
-          <Link
-            to={"/dashboard?tab=profile"}
-            className="text-xs text-cyan-600 hover:underline"
-          >
-            {" "}
-            @ {currentUser.username}
-          </Link>
+        <div className="flex justify-between items-center">
+          <div className="flex items-center gap-1 my-5 text-gray-500 text-sm">
+            <p>Signed in as:</p>
+            <img
+              className="h-5 w-5 object-cover rounded-full"
+              src={currentUser.profilePicture}
+              alt={currentUser.username}
+            />
+            <Link
+              to={"/dashboard?tab=profile"}
+              className="text-xs text-cyan-600 hover:underline"
+            >
+              {" "}
+              @ {currentUser.username}
+            </Link>
+          </div>
+          <div className="flex items-center gap-6 text-xl">
+            {currentUser.isAdmin && (
+              <MdEdit
+                className="cursor-pointer text-gray-500 hover:text-gray-700"
+                onClick={() => navigate(`/update-post/${postId}`)}
+              />
+            )}
+            <FaShare
+              className="cursor-pointer text-gray-500 hover:text-gray-700"
+              title="Share"
+              onClick={() => setShowShareModal(true)}
+            />
+          </div>
         </div>
       ) : (
         <div className="text-sm text-teal-500 my-5 flex gap-1">
@@ -215,6 +248,38 @@ export default function CommentSection({ postId }) {
               <Button color="gray" onClick={() => setShowModal(false)}>
                 No, cancel
               </Button>
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
+      <Modal
+        show={showShareModal}
+        onClose={() => setShowShareModal(false)}
+        popup
+        size="md"
+      >
+        <Modal.Header />
+        <Modal.Body>
+          <div className="text-center">
+            <div className="flex mb-4 justify-center gap-8">
+              <div className="flex flex-col items-center justify-center gap-2">
+                <div
+                  onClick={handleWhatsappShare}
+                  className="w-14 h-14 cursor-pointer flex items-center justify-center rounded-full border border-gray-300 hover:bg-gray-100 bg-gray-50 "
+                >
+                  <FaWhatsapp className="text-2xl text-[28px] text-green-600" />
+                </div>
+                <p className="text-xs text-gray-400">WhatsApp</p>
+              </div>
+              <div className="flex flex-col items-center justify-center gap-2">
+                <div
+                  onClick={handleFacebookShare}
+                  className="w-14 h-14 cursor-pointer flex items-center justify-center rounded-full border border-gray-300 hover:bg-gray-100 bg-gray-50 "
+                >
+                  <FaFacebookF className="text-2xl text-blue-800" />
+                </div>
+                <p className="text-xs text-gray-400">Facebook</p>
+              </div>
             </div>
           </div>
         </Modal.Body>

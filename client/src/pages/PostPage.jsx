@@ -4,6 +4,7 @@ import { Button, Spinner } from "flowbite-react";
 import CallToAction from "../components/CallToAction";
 import CommentSection from "../components/CommentSection";
 import PostCard from "../components/PostCard";
+import { htmlToText } from "html-to-text";
 
 export default function PostPage() {
   const { postSlug } = useParams();
@@ -16,7 +17,9 @@ export default function PostPage() {
     const fetchPost = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/post/getposts?slug=${postSlug}`);
+        const res = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/post/getposts?slug=${postSlug}`
+        );
         const data = await res.json();
         if (!res.ok) {
           setError(true);
@@ -41,7 +44,9 @@ export default function PostPage() {
   useEffect(() => {
     try {
       const fetchRecentPost = async () => {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/post/getposts?limit=3`);
+        const res = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/post/getposts?limit=3`
+        );
         const data = await res.json();
         if (res.ok) {
           setRecentPosts(data.posts);
@@ -52,6 +57,32 @@ export default function PostPage() {
       console.log(error.message);
     }
   }, []);
+
+  const handleWhatsappShare = () => {
+    const postLink =
+      "https://nayasaveraparivar.life/post/%E0%A4%A8%E0%A4%AF%E0%A4%BE-%E0%A4%B8%E0%A4%B5%E0%A5%87%E0%A4%B0%E0%A4%BE-%E0%A4%AA%E0%A4%B0%E0%A4%BF%E0%A4%B5%E0%A4%BE%E0%A4%B0-%E0%A4%95%E0%A5%80-%E0%A4%A6%E0%A4%BE%E0%A4%B0%E0%A5%8D%E0%A4%B6%E0%A4%A8%E0%A4%BF%E0%A4%95-%E0%A4%AE%E0%A4%BE%E0%A4%A8%E0%A5%8D%E0%A4%AF%E0%A4%A4%E0%A4%BE%E0%A4%8F%E0%A4%81";
+    const plainTextContent = htmlToText(post.content, {
+      wordwrap: 130,
+      limits: {
+        maxInputLength: 10000,
+      },
+    }).slice(0, 300);
+    const message = `*${post.title}*\n\n${plainTextContent}...\n\nSee more: ${postLink}`;
+    const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(
+      message
+    )}`;
+    window.open(whatsappUrl, "_blank");
+  };
+
+  const handleFacebookShare = () => {
+    const postLink =
+      "https://nayasaveraparivar.life/post/%E0%A4%A8%E0%A4%AF%E0%A4%BE-%E0%A4%B8%E0%A4%B5%E0%A5%87%E0%A4%B0%E0%A4%BE-%E0%A4%AA%E0%A4%B0%E0%A4%BF%E0%A4%B5%E0%A4%BE%E0%A4%B0-%E0%A4%95%E0%A5%80-%E0%A4%A6%E0%A4%BE%E0%A4%B0%E0%A5%8D%E0%A4%B6%E0%A4%A8%E0%A4%BF%E0%A4%95-%E0%A4%AE%E0%A4%BE%E0%A4%A8%E0%A5%8D%E0%A4%AF%E0%A4%A4%E0%A4%BE%E0%A4%8F%E0%A4%81";
+
+    const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+      postLink
+    )}`;
+    window.open(facebookUrl, "_blank");
+  };
 
   if (loading)
     return (
@@ -90,7 +121,11 @@ export default function PostPage() {
       <div className="max-w-4xl mx-auto w-full">
         <CallToAction />
       </div>
-      <CommentSection postId={post._id} />
+      <CommentSection
+        postId={post._id}
+        handleWhatsappShare={handleWhatsappShare}
+        handleFacebookShare={handleFacebookShare}
+      />
       <div className="flex flex-col justify-center items-center mb-5">
         <h1 className="text-xl mt-5">Recent articles</h1>
         <div className="flex flex-wrap gap-5 mt-5 justify-center">
