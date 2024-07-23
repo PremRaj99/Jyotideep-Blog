@@ -68,7 +68,7 @@ export default function PostPage() {
       },
     }).slice(0, 600);
     const text = "```" + plainTextContent + "```";
-    const message = `*${post.title}*\n\n${text}...\n\nSee more: ${postLink}`;
+    const message = `🌟 *${post.title}* 🌟\n\n${text}...\n\n🔗 Read more: ${postLink}\n\n📸 Check it out now!`;
     const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(
       message
     )}`;
