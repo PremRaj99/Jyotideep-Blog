@@ -7,7 +7,7 @@ import postRoutes from "./routes/post.route.js";
 import commentRoutes from "./routes/comment.route.js";
 import cookieParser from "cookie-parser";
 import path from "path";
-
+import cors from "cors";
 dotenv.config();
 
 mongoose
@@ -24,6 +24,13 @@ const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(
+  cors({
+    origin: process.env.FRONTEND || "*",
+    methods: ["GET", "POST", "PUT", "DELETE"], // allowed HTTP methods
+    credentials: true, // if your API requires cookies or HTTP authentication
+  })
+);
 
 app.listen("3000", () => {
   console.log("server is running on port 3000");
@@ -34,10 +41,13 @@ app.use("/api/auth", authRoutes);
 app.use("/api/post", postRoutes);
 app.use("/api/comment", commentRoutes);
 
-app.use(express.static(path.join(__dirname, "/client/dist")));
+// app.use(express.static(path.join(__dirname, "/client/dist")));
 
+// app.get("*", (req, res) => {
+//   res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
+// });
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
+  res.send('server is running.');
 });
 
 app.use((err, req, res, next) => {
