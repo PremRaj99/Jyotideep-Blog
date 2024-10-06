@@ -15,7 +15,9 @@ export default function DashUsers() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/user/getusers`);
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/user/getusers`, {
+          credentials: "include",
+        });
         const data = await res.json();
         if (res.ok) {
           setUsers(data.users);
@@ -36,7 +38,9 @@ export default function DashUsers() {
   const handleShowMore = async () => {
     const startIndex = users.length;
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/user/getusers?startIndex=${startIndex}`);
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/user/getusers?startIndex=${startIndex}`, {
+        credentials: "include",
+      });
       const data = await res.json();
       if (res.ok) {
         setUsers((prev) => [...prev, ...data.users]);
@@ -54,6 +58,7 @@ export default function DashUsers() {
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/user/delete/${userIdToDelete}`, {
         method: "DELETE",
+        credentials: "include",
       });
       const data = await res.json();
       if (res.ok) {

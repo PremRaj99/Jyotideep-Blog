@@ -58,6 +58,7 @@ export default function DashComments() {
         `${import.meta.env.VITE_API_URL}/api/comment/deletecomment/${commentIdToDelete}`,
         {
           method: "DELETE",
+          credentials: "include",
         }
       );
       const data = await res.json();
