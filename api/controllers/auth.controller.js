@@ -59,6 +59,7 @@ export const signin = async (req, res, next) => {
       .cookie("access_token", token, {
         httpOnly: true,
         sameSite: "None",
+        secure: process.env.NODE_ENV === "production",
       })
       .json(rest);
   } catch (error) {
@@ -79,6 +80,7 @@ export const google = async (req, res, next) => {
         .cookie("access_token", token, {
           httpOnly: true,
           sameSite: "None",
+          secure: process.env.NODE_ENV === "production",
         })
         .json(rest);
     } else {
@@ -103,6 +105,7 @@ export const google = async (req, res, next) => {
         .cookie("access_token", token, {
           httpOnly: true,
           sameSite: "None",
+          secure: process.env.NODE_ENV === "production",
         })
         .json(rest);
     }
