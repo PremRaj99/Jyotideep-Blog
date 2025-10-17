@@ -1,24 +1,35 @@
-import { Alert, Button, FileInput, Select, TextInput } from "flowbite-react";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
-import React, { useState } from "react";
 import {
   getDownloadURL,
   getStorage,
   ref,
   uploadBytesResumable,
 } from "firebase/storage";
-import { app } from "../firebase";
+import { Alert, Button, FileInput, Select, TextInput } from "flowbite-react";
+import JoditEditor from "jodit-react";
+import { useMemo, useRef, useState } from "react";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { useNavigate } from "react-router-dom";
+import { app } from "../firebase";
 
 export default function CreatePost() {
+  const editor = useRef(null);
   const [file, setFile] = useState(null);
   const [imageUploadProgress, setImageUploadProgress] = useState(null);
   const [imageUploadError, setImageUploadError] = useState(null);
   const [formData, setFormData] = useState({});
   const [publishError, setPublishError] = useState(null);
+
+  const editorConfig = useMemo(
+    () => ({
+      height: 500,
+      minHeight: 400,
+      maxHeight: 800,
+      toolbarSticky: true,
+      toolbarStickyOffset: 80,
+    }),
+    []
+  );
 
   const navigate = useNavigate();
   const handleUploadImage = async () => {
@@ -94,18 +105,17 @@ export default function CreatePost() {
             id="title"
             className="flex-1"
             onChange={(e) => {
-              setFormData({...formData, title: e.target.value})
+              setFormData({ ...formData, title: e.target.value })
             }}
           />
           <Select
-          onChange={(e) => {
-            setFormData({...formData, category: e.target.value})
-          }}>
-            <option value="Social">Social</option>
-            <option value="Spritual">Spritual</option>
-            <option value="Political">Political</option>
-            <option value="Economic">Economic</option>
-            <option value="Environmental">Environmental</option>
+            onChange={(e) => {
+              setFormData({ ...formData, category: e.target.value })
+            }}>
+            <option value="uncategorized">Select a category</option>
+            <option value="javascript">JavaScript</option>
+            <option value="reactjs">React.js</option>
+            <option value="nextjs">Next.js</option>
           </Select>
         </div>
         <div className="flex gap-4 items-center justify-between border-4 border-teal-100 border-dotted p-3">
@@ -144,14 +154,12 @@ export default function CreatePost() {
             className="w-full h-72 object-cover"
           />
         )}
-        <ReactQuill
-          theme="snow"
+        <JoditEditor
+          ref={editor}
+          value={formData.content}
           placeholder="Write something..."
-          className="h-72 mb-12"
-          required
-          onChange={(value) => {
-            setFormData({...formData, content: value})
-          }}
+          onChange={(e) => setFormData((prev) => ({ ...prev, content: e }))}
+          config={editorConfig}
         />
         <Button type="submit" gradientDuoTone={"purpleToPink"}>
           Publish
